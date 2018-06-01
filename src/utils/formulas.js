@@ -14,7 +14,7 @@ export const pathFromBezierCurve = cubicBezierCurve => {
   `;
 };
 
-export const radiansToDegrees = radians => ((radians * 180) / Math.PI);
+export const radiansToDegrees = radians => radians * 180 / Math.PI;
 
 // https://math.stackexchange.com/questions/714378/find-the-angle-that-creating-with-y-axis-in-degrees
 export const calculateAngle = (x1, y1, x2, y2) => {
@@ -29,4 +29,16 @@ export const calculateAngle = (x1, y1, x2, y2) => {
   const quotient = dividend / divisor;
 
   return radiansToDegrees(Math.atan(quotient)) * -1;
+};
+
+// https://stackoverflow.com/a/10298843/1232793
+export const getCanvasPosition = event => {
+  const svg = document.getElementById('aliens-go-home-canvas');
+  const point = svg.createSVGPoint();
+
+  point.x = event.clientX;
+  point.y = event.clientY;
+  const { x, y } = point.matrixTransform(svg.getScreenCTM().inverse());
+
+  return { x, y };
 };
