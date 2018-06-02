@@ -12,7 +12,7 @@ import Sky from './Sky';
 import StartGame from './StartGame';
 import Title from './Title';
 
-const Canvas = ({ angle, trackMouse }) => {
+const Canvas = ({ angle, gameState, startGame, trackMouse }) => {
   const gameHeight = 1200;
   const viewBox = [
     window.innerWidth / -2,
@@ -39,17 +39,31 @@ const Canvas = ({ angle, trackMouse }) => {
       <CannonBase />
       <CannonBall position={{ x: 0, y: -100 }} />
       <CurrentScore score={15} />
-      <FlyingObject position={{ x: -150, y: -300 }} />
-      <FlyingObject position={{ x: 150, y: -300 }} />
+      {!gameState.started && (
+        <g>
+          <StartGame onClick={() => startGame()} />
+          <Title />
+        </g>
+      )}
+      {gameState.started && (
+        <g>
+          <FlyingObject position={{ x: -150, y: -300 }} />
+          <FlyingObject position={{ x: 150, y: -300 }} />
+        </g>
+      )}
       <Heart position={{ x: -300, y: 35 }} />
-      <StartGame onClick={() => console.log('Aliens, Go Home!')} />
-      <Title />
     </svg>
   );
 };
 
 Canvas.propTypes = {
   angle: PropTypes.number.isRequired,
+  gameState: PropTypes.shape({
+    started: PropTypes.bool.isRequired,
+    kills: PropTypes.number.isRequired,
+    lives: PropTypes.number.isRequired,
+  }).isRequired,
+  startGame: PropTypes.func.isRequired,
   trackMouse: PropTypes.func.isRequired,
 };
 
