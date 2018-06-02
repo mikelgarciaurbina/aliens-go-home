@@ -5,6 +5,7 @@ import CannonBall from './CannonBall';
 import CannonBase from './CannonBase';
 import CannonPipe from './CannonPipe';
 import CurrentScore from './CurrentScore';
+import FlyingObject from './FlyingObject';
 import Ground from './Ground';
 import Sky from './Sky';
 
@@ -34,6 +35,8 @@ const Canvas = ({ angle, trackMouse }) => {
       <CannonBase />
       <CannonBall position={{ x: 0, y: -100 }} />
       <CurrentScore score={15} />
+      <FlyingObject position={{x: -150, y: -300}}/>
+      <FlyingObject position={{x: 150, y: -300}}/>
     </svg>
   );
 };
