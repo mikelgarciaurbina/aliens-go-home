@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Sky from './Sky';
-import Ground from './Ground';
+
+import CannonBall from './CannonBall';
 import CannonBase from './CannonBase';
 import CannonPipe from './CannonPipe';
+import Ground from './Ground';
+import Sky from './Sky';
 
 const Canvas = ({ angle, trackMouse }) => {
   const viewBox = [
@@ -24,6 +26,7 @@ const Canvas = ({ angle, trackMouse }) => {
       <Ground />
       <CannonPipe rotation={angle} />
       <CannonBase />
+      <CannonBall position={{ x: 0, y: -100 }} />
     </svg>
   );
 };
