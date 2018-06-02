@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { pathFromBezierCurve } from '../utils/formulas';
 
-const FlyingObjectTop = props => {
+const FlyingObjectTop = ({ position }) => {
   const style = {
     fill: '#b6b6b6',
     stroke: '#7d7d7d',
@@ -14,8 +14,8 @@ const FlyingObjectTop = props => {
 
   const cubicBezierCurve = {
     initialAxis: {
-      x: props.position.x - halfBase,
-      y: props.position.y,
+      x: position.x - halfBase,
+      y: position.y,
     },
     initialControlPoint: {
       x: 10,
