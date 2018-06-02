@@ -13,11 +13,12 @@ import StartGame from './StartGame';
 import Title from './Title';
 
 const Canvas = ({ angle, trackMouse }) => {
+  const gameHeight = 1200;
   const viewBox = [
     window.innerWidth / -2,
-    100 - window.innerHeight,
+    100 - gameHeight,
     window.innerWidth,
-    window.innerHeight,
+    gameHeight,
   ];
 
   return (
@@ -38,9 +39,9 @@ const Canvas = ({ angle, trackMouse }) => {
       <CannonBase />
       <CannonBall position={{ x: 0, y: -100 }} />
       <CurrentScore score={15} />
-      <FlyingObject position={{x: -150, y: -300}}/>
-      <FlyingObject position={{x: 150, y: -300}}/>
-      <Heart position={{x: -300, y: 35}} />
+      <FlyingObject position={{ x: -150, y: -300 }} />
+      <FlyingObject position={{ x: 150, y: -300 }} />
+      <Heart position={{ x: -300, y: 35 }} />
       <StartGame onClick={() => console.log('Aliens, Go Home!')} />
       <Title />
     </svg>
