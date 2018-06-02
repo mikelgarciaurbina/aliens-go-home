@@ -10,6 +10,7 @@ import Ground from './Ground';
 import Heart from './Heart';
 import Sky from './Sky';
 import StartGame from './StartGame';
+import Title from './Title';
 
 const Canvas = ({ angle, trackMouse }) => {
   const viewBox = [
@@ -41,6 +42,7 @@ const Canvas = ({ angle, trackMouse }) => {
       <FlyingObject position={{x: 150, y: -300}}/>
       <Heart position={{x: -300, y: 35}} />
       <StartGame onClick={() => console.log('Aliens, Go Home!')} />
+      <Title />
     </svg>
   );
 };
