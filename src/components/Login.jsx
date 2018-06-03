@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Login = ({ authenticate }) => {
+const Login = ({ auth }) => {
   const button = {
     x: -300,
     y: -600,
@@ -11,7 +11,7 @@ const Login = ({ authenticate }) => {
       fill: 'transparent',
       cursor: 'pointer',
     },
-    onClick: authenticate,
+    onClick: auth.login,
   };
 
   const text = {
@@ -24,7 +24,7 @@ const Login = ({ authenticate }) => {
       fill: '#e3e3e3',
       cursor: 'pointer',
     },
-    onClick: authenticate,
+    onClick: auth.login,
   };
 
   return (
@@ -36,7 +36,9 @@ const Login = ({ authenticate }) => {
 };
 
 Login.propTypes = {
-  authenticate: PropTypes.func.isRequired,
+  auth: PropTypes.shape({
+    login: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default Login;
