@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { signIn } from 'auth0-web';
 
 import CannonBall from './CannonBall';
 import CannonBase from './CannonBase';
@@ -14,7 +13,7 @@ import Sky from './Sky';
 import StartGame from './StartGame';
 import Title from './Title';
 
-const Canvas = ({ angle, gameState, startGame, trackMouse }) => {
+const Canvas = ({ angle, auth, gameState, startGame, trackMouse }) => {
   const gameHeight = 1200;
   const viewBox = [
     window.innerWidth / -2,
@@ -45,7 +44,7 @@ const Canvas = ({ angle, gameState, startGame, trackMouse }) => {
         <g>
           <StartGame onClick={() => startGame()} />
           <Title />
-          <Login authenticate={signIn} />
+          <Login auth={auth} />
         </g>
       )}
       {gameState.started &&
