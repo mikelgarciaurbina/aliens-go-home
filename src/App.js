@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import Auth from './auth/Auth';
 import { getCanvasPosition } from './utils/formulas';
 import Canvas from './components/Canvas';
+
+const auth = new Auth();
 
 class App extends Component {
   componentDidMount() {
     const self = this;
+
+    auth.handleAuthentication();
 
     setInterval(() => {
       self.props.moveObjects(self.canvasMousePosition);
@@ -29,6 +35,7 @@ class App extends Component {
     return (
       <Canvas
         angle={angle}
+        auth={auth}
         gameState={gameState}
         startGame={startGame}
         trackMouse={event => this.trackMouse(event)}
