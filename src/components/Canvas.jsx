@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { signIn } from 'auth0-web';
 
 import CannonBall from './CannonBall';
 import CannonBase from './CannonBase';
@@ -8,6 +9,7 @@ import CurrentScore from './CurrentScore';
 import FlyingObject from './FlyingObject';
 import Ground from './Ground';
 import Heart from './Heart';
+import Login from './Login';
 import Sky from './Sky';
 import StartGame from './StartGame';
 import Title from './Title';
@@ -43,6 +45,7 @@ const Canvas = ({ angle, gameState, startGame, trackMouse }) => {
         <g>
           <StartGame onClick={() => startGame()} />
           <Title />
+          <Login authenticate={signIn} />
         </g>
       )}
       {gameState.started &&
