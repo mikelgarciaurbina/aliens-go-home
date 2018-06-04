@@ -1,4 +1,5 @@
 import auth0 from 'auth0-js';
+import io from 'socket.io-client';
 
 export default class Auth {
   constructor() {
@@ -16,13 +17,49 @@ export default class Auth {
     this.logout = this.logout.bind(this);
   }
 
-  handleAuthentication() {
+  handleAuthentication({ leaderboardLoaded, loggedIn }) {
     this.auth0.parseHash((err, authResult) => {
-      if (authResult && authResult.accessToken && authResult.idToken) {
-        this.setSession(authResult);
-      } else if (err) {
-        console.log(err);
+      if (err || !authResult) {
+        return console.log(err);
       }
+
+      this.auth0.client.userInfo(authResult.accessToken, function(err, user) {
+        const currentPlayer = {
+          id: user.sub,
+          maxScore: 0,
+          name: user.name,
+          picture: user.picture,
+        };
+
+        loggedIn(currentPlayer);
+
+
+        const socket = io('http://localhost:3001', {
+          query: `token=${authResult.accessToken}`,
+        });
+
+        let emitted = false;
+        socket.on('players', (players) => {
+          leaderboardLoaded(players);
+
+          if (emitted) return;
+          socket.emit('new-max-score', {
+            id: user.sub,
+            maxScore: 120,
+            name: user.name,
+            picture: user.picture,
+          });
+          emitted = true;
+          setTimeout(() => {
+            socket.emit('new-max-score', {
+              id: user.sub,
+              maxScore: 222,
+              name: user.name,
+              picture: user.picture,
+            });
+          }, 5000);
+        });
+      });
     });
   }
 
