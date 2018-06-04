@@ -2,12 +2,15 @@ import {
   LEADERBOARD_LOADED,
   LOGGED_IN,
   MOVE_OBJECTS,
+  SHOOT,
   START_GAME,
 } from '../actions';
 import moveObjects from './moveObjects';
+import shoot from './shoot';
 import startGame from './startGame';
 
 const initialGameState = {
+  cannonBalls: [],
   currentPlayer: null,
   flyingObjects: [],
   kills: 0,
@@ -36,6 +39,8 @@ function reducer(state = initialState, action) {
       };
     case MOVE_OBJECTS:
       return moveObjects(state, action);
+    case SHOOT:
+      return shoot(state, action);
     case START_GAME:
       return startGame(state, initialGameState);
     default:
