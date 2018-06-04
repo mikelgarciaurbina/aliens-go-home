@@ -8,6 +8,11 @@ import Canvas from './components/Canvas';
 const auth = new Auth();
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.shoot = this.shoot.bind(this);
+  }
+
   componentDidMount() {
     const self = this;
 
@@ -29,6 +34,10 @@ class App extends Component {
     this.canvasMousePosition = getCanvasPosition(event);
   }
 
+  shoot() {
+    this.props.shoot(this.canvasMousePosition);
+  }
+
   render() {
     const { angle, currentPlayer, gameState, players, startGame } = this.props;
 
@@ -39,6 +48,7 @@ class App extends Component {
         auth={auth}
         gameState={gameState}
         players={players}
+        shoot={this.shoot}
         startGame={startGame}
         trackMouse={event => this.trackMouse(event)}
       />
@@ -79,6 +89,7 @@ App.propTypes = {
       picture: PropTypes.string.isRequired,
     }),
   ),
+  shoot: PropTypes.func.isRequired,
   startGame: PropTypes.func.isRequired,
 };
 
