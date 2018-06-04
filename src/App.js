@@ -11,7 +11,7 @@ class App extends Component {
   componentDidMount() {
     const self = this;
 
-    auth.handleAuthentication();
+    auth.handleAuthentication(this.props);
 
     setInterval(() => {
       self.props.moveObjects(self.canvasMousePosition);
@@ -30,13 +30,15 @@ class App extends Component {
   }
 
   render() {
-    const { angle, gameState, startGame } = this.props;
+    const { angle, currentPlayer, gameState, players, startGame } = this.props;
 
     return (
       <Canvas
         angle={angle}
+        currentPlayer={currentPlayer}
         auth={auth}
         gameState={gameState}
+        players={players}
         startGame={startGame}
         trackMouse={event => this.trackMouse(event)}
       />
@@ -46,6 +48,12 @@ class App extends Component {
 
 App.propTypes = {
   angle: PropTypes.number.isRequired,
+  currentPlayer: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    maxScore: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    picture: PropTypes.string.isRequired,
+  }),
   gameState: PropTypes.shape({
     flyingObjects: PropTypes.arrayOf(
       PropTypes.shape({
@@ -60,8 +68,23 @@ App.propTypes = {
     lives: PropTypes.number.isRequired,
     started: PropTypes.bool.isRequired,
   }).isRequired,
+  leaderboardLoaded: PropTypes.func.isRequired,
+  loggedIn: PropTypes.func.isRequired,
   moveObjects: PropTypes.func.isRequired,
+  players: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      maxScore: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      picture: PropTypes.string.isRequired,
+    }),
+  ),
   startGame: PropTypes.func.isRequired,
+};
+
+App.defaultProps = {
+  currentPlayer: null,
+  players: null,
 };
 
 export default App;
