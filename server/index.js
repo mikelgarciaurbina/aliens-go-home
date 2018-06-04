@@ -1,12 +1,22 @@
 const app = require('express')();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
-const jwt = require('jsonwebtoken');
+const jwt = require('express-jwt');
 const jwksClient = require('jwks-rsa');
 
-const client = jwksClient({
-  jwksUri: 'https://mikelgarciaurbina.eu.auth0.com/.well-known/jwks.json',
+const client = jwt({
+  secret: jwksClient.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: 'https://mikelgarciaurbina.eu.auth0.com/.well-known/jwks.json',
+  }),
+  audience: 'https://aliens-go-home.digituz.com.br',
+  issuer: 'https://mikelgarciaurbina.eu.auth0.com/',
+  algorithms: ['RS256'],
 });
+
+app.use(client);
 
 const players = [
   {
@@ -47,17 +57,6 @@ const players = [
   },
 ];
 
-const verifyPlayer = (token, cb) => {
-  const uncheckedToken = jwt.decode(token, { complete: true });
-  const kid = uncheckedToken.header.kid;
-
-  client.getSigningKey(kid, (err, key) => {
-    const signingKey = key.publicKey || key.rsaPublicKey;
-
-    jwt.verify(token, signingKey, cb);
-  });
-};
-
 const newMaxScoreHandler = payload => {
   let foundPlayer = false;
   players.forEach(player => {
@@ -75,12 +74,7 @@ const newMaxScoreHandler = payload => {
 };
 
 io.on('connection', socket => {
-  const { token } = socket.handshake.query;
-
-  verifyPlayer(token, err => {
-    if (err) socket.disconnect();
-    io.emit('players', players);
-  });
+  io.emit('players', players);
 
   socket.on('new-max-score', newMaxScoreHandler);
 });
