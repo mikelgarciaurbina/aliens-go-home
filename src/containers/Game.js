@@ -5,6 +5,7 @@ import {
   leaderboardLoaded,
   loggedIn,
   moveObjects,
+  shoot,
   startGame,
 } from '../actions';
 
@@ -24,6 +25,9 @@ const mapDispatchToProps = dispatch => ({
   },
   moveObjects: mousePosition => {
     dispatch(moveObjects(mousePosition));
+  },
+  shoot: mousePosition => {
+    dispatch(shoot(mousePosition));
   },
   startGame: () => {
     dispatch(startGame());
