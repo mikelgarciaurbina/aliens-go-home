@@ -59,7 +59,7 @@ const Canvas = ({
       ))}
       <CannonPipe rotation={angle} />
       <CannonBase />
-      <CurrentScore score={15} />
+      <CurrentScore score={gameState.kills} />
       {!gameState.started && (
         <g>
           <StartGame onClick={() => startGame()} />
