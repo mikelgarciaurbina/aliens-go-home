@@ -30,6 +30,14 @@ const Canvas = ({
     window.innerWidth,
     gameHeight,
   ];
+  const lives = [];
+  for (let i = 0; i < gameState.lives; i++) {
+    const heartPosition = {
+      x: -180 - i * 70,
+      y: 35,
+    };
+    lives.push(<Heart key={i} position={heartPosition} />);
+  }
 
   return (
     <svg
@@ -47,10 +55,7 @@ const Canvas = ({
       <Sky />
       <Ground />
       {gameState.cannonBalls.map(cannonBall => (
-        <CannonBall
-          key={cannonBall.id}
-          position={cannonBall.position}
-        />
+        <CannonBall key={cannonBall.id} position={cannonBall.position} />
       ))}
       <CannonPipe rotation={angle} />
       <CannonBase />
@@ -73,7 +78,7 @@ const Canvas = ({
             position={flyingObject.position}
           />
         ))}
-      <Heart position={{ x: -300, y: 35 }} />
+      {lives}
     </svg>
   );
 };
