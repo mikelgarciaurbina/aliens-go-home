@@ -10,6 +10,7 @@ const auth = new Auth();
 class App extends Component {
   constructor(props) {
     super(props);
+
     this.shoot = this.shoot.bind(this);
   }
 
@@ -28,6 +29,10 @@ class App extends Component {
       cnv.style.height = `${window.innerHeight}px`;
     };
     window.onresize();
+  }
+
+  componentWillReceiveProps(nextProps) {
+    auth.emitNewScore(nextProps, this.props)
   }
 
   trackMouse(event) {
