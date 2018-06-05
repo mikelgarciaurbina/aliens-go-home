@@ -11,81 +11,60 @@ export default class Auth {
       responseType: 'token id_token',
       scope: 'openid profile manage:points',
     });
+    this.currentPlayer = null;
+    this.socket = null;
+    this.emitNewScore = this.emitNewScore.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
-    this.isAuthenticated = this.isAuthenticated.bind(this);
     this.login = this.login.bind(this);
-    this.logout = this.logout.bind(this);
+  }
+
+  emitNewScore(nextProps, props) {
+    if (!nextProps.gameState.started && props.gameState.started) {
+      if (this.currentPlayer.maxScore < props.gameState.kills) {
+        this.socket.emit('new-max-score', {
+          ...this.currentPlayer,
+          maxScore: props.gameState.kills,
+        });
+      }
+    }
   }
 
   handleAuthentication({ leaderboardLoaded, loggedIn }) {
+    const self = this;
+
     this.auth0.parseHash((err, authResult) => {
       if (err || !authResult) {
         return console.log(err);
       }
 
       this.auth0.client.userInfo(authResult.accessToken, function(err, user) {
-        const currentPlayer = {
+        self.currentPlayer = {
           id: user.sub,
           maxScore: 0,
           name: user.name,
           picture: user.picture,
         };
 
-        loggedIn(currentPlayer);
+        loggedIn(self.currentPlayer);
 
-
-        const socket = io('http://localhost:3001', {
+        self.socket = io('http://localhost:3001', {
           query: `token=${authResult.accessToken}`,
         });
 
-        let emitted = false;
-        socket.on('players', (players) => {
+        self.socket.on('players', players => {
           leaderboardLoaded(players);
 
-          if (emitted) return;
-          socket.emit('new-max-score', {
-            id: user.sub,
-            maxScore: 120,
-            name: user.name,
-            picture: user.picture,
+          players.forEach(player => {
+            if (player.id === self.currentPlayer.id) {
+              self.currentPlayer.maxScore = player.maxScore;
+            }
           });
-          emitted = true;
-          setTimeout(() => {
-            socket.emit('new-max-score', {
-              id: user.sub,
-              maxScore: 222,
-              name: user.name,
-              picture: user.picture,
-            });
-          }, 5000);
         });
       });
     });
   }
 
-  isAuthenticated() {
-    let expiresAt = JSON.parse(localStorage.getItem('expires_at'));
-
-    return new Date().getTime() < expiresAt;
-  }
-
   login() {
     this.auth0.authorize();
-  }
-
-  logout() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('id_token');
-    localStorage.removeItem('expires_at');
-  }
-
-  setSession(authResult) {
-    let expiresAt = JSON.stringify(
-      authResult.expiresIn * 1000 + new Date().getTime(),
-    );
-
-    localStorage.setItem('access_token', authResult.accessToken);
-    localStorage.setItem('id_token', authResult.idToken);
-    localStorage.setItem('expires_at', expiresAt);
   }
 }
