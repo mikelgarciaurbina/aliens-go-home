@@ -18,44 +18,7 @@ const client = jwt({
 
 app.use(client);
 
-const players = [
-  {
-    id: 'a1',
-    maxScore: 235,
-    name: 'Bruno Krebs',
-    picture: 'https://twitter.com/brunoskrebs/profile_image',
-  },
-  {
-    id: 'c3',
-    maxScore: 99,
-    name: 'Diego Poza',
-    picture: 'https://twitter.com/diegopoza/profile_image',
-  },
-  {
-    id: 'b2',
-    maxScore: 129,
-    name: 'Jeana Tahnk',
-    picture: 'https://twitter.com/jeanatahnk/profile_image',
-  },
-  {
-    id: 'f6',
-    maxScore: 153,
-    name: 'Kim Maida',
-    picture: 'https://twitter.com/KimMaida/profile_image',
-  },
-  {
-    id: 'e5',
-    maxScore: 55,
-    name: 'Luke Oliff',
-    picture: 'https://twitter.com/mroliff/profile_image',
-  },
-  {
-    id: 'd4',
-    maxScore: 146,
-    name: 'Sebastián Peyrott',
-    picture: 'https://twitter.com/speyrott/profile_image',
-  },
-];
+const players = [];
 
 const newMaxScoreHandler = payload => {
   let foundPlayer = false;
