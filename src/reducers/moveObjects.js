@@ -51,6 +51,8 @@ function moveObjects(state, action) {
     flyingDiscsDestroyed.indexOf(flyingDisc.id),
   );
 
+  const kills = state.gameState.kills + flyingDiscsDestroyed.length;
+
   return {
     ...newState,
     angle,
@@ -58,6 +60,7 @@ function moveObjects(state, action) {
       ...newState.gameState,
       cannonBalls,
       flyingObjects,
+      kills,
       lives,
       started,
     },
